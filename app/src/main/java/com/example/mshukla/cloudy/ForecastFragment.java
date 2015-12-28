@@ -1,5 +1,6 @@
 package com.example.mshukla.cloudy;
 
+import android.content.Intent;
 import android.content.pm.FeatureGroupInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -13,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -78,12 +80,21 @@ public class ForecastFragment extends Fragment {
         String forcastArray[] = { "Today-Sunny-81/85","Today-Sunny-81/85",
                 "Today-Sunny-81/82",
                 "Today-Sunny-81/86"};
-        List<String> weekForecast = new ArrayList<>(Arrays.asList(forcastArray));
+        final List<String> weekForecast = new ArrayList<>(Arrays.asList(forcastArray));
 
         mForecastAdapter = new ArrayAdapter<String>(getActivity(), R.layout.list_item_forecast, R.id.list_item_forecast_textview,
                 weekForecast);
 
         listView.setAdapter(mForecastAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String forecast = mForecastAdapter.getItem(i);
+                Intent intent = new Intent(getActivity(),DetailActivity.class)
+                        .putExtra(Intent.EXTRA_TEXT,forecast);
+                startActivity(intent);
+            }
+        });
 
         return rootView;
 
