@@ -37,9 +37,10 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-
-        final String SQL_CREATE_LOCATION_TABLE = "CREATE TABLE " + LocationEntry.TABLE_NAME + " ("
-                + LocationEntry._ID + " INTEGER PRIMARY KEY," +
+        // Create a table to hold locations.  A location consists of the string supplied in the
+        // location setting, the city name, and the latitude and longitude
+        final String SQL_CREATE_LOCATION_TABLE = "CREATE TABLE " + LocationEntry.TABLE_NAME + " (" +
+                LocationEntry._ID + " INTEGER PRIMARY KEY," +
                 LocationEntry.COLUMN_LOCATION_SETTING + " TEXT UNIQUE NOT NULL, " +
                 LocationEntry.COLUMN_CITY_NAME + " TEXT NOT NULL, " +
                 LocationEntry.COLUMN_COORD_LAT + " REAL NOT NULL, " +
@@ -56,9 +57,9 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
 
                 // the ID of the location entry associated with this weather data
                 WeatherEntry.COLUMN_LOC_KEY + " INTEGER NOT NULL, " +
-                WeatherContract.WeatherEntry.COLUMN_DATE + " INTEGER NOT NULL, " +
-                WeatherContract.WeatherEntry.COLUMN_SHORT_DESC + " TEXT NOT NULL, " +
-                WeatherContract.WeatherEntry.COLUMN_WEATHER_ID + " INTEGER NOT NULL," +
+                WeatherEntry.COLUMN_DATE + " INTEGER NOT NULL, " +
+                WeatherEntry.COLUMN_SHORT_DESC + " TEXT NOT NULL, " +
+                WeatherEntry.COLUMN_WEATHER_ID + " INTEGER NOT NULL," +
 
                 WeatherEntry.COLUMN_MIN_TEMP + " REAL NOT NULL, " +
                 WeatherEntry.COLUMN_MAX_TEMP + " REAL NOT NULL, " +
@@ -77,9 +78,8 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
                 " UNIQUE (" + WeatherEntry.COLUMN_DATE + ", " +
                 WeatherEntry.COLUMN_LOC_KEY + ") ON CONFLICT REPLACE);";
 
-        sqLiteDatabase.execSQL(SQL_CREATE_WEATHER_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_LOCATION_TABLE);
-
+        sqLiteDatabase.execSQL(SQL_CREATE_WEATHER_TABLE);
     }
 
     @Override
