@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.mshukla.cloudy.data.WeatherContract;
+
 /**
  * Created by manas on 1/1/16.
  */
@@ -30,6 +32,7 @@ public class ForecastAdapter extends CursorAdapter {
         string.
      */
     private String convertCursorRowToUXFormat(Cursor cursor) {
+
         String highAndLow = formatHighLows(
                 cursor.getDouble(ForecastFragment.COL_WEATHER_MAX_TEMP),
                 cursor.getDouble(ForecastFragment.COL_WEATHER_MIN_TEMP));

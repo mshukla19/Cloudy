@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.ShareActionProvider;
 import android.util.Log;
@@ -27,13 +28,16 @@ import butterknife.ButterKnife;
 /**
  * A placeholder fragment containing a simple view.
  */
+
 public class DetailActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+
 
     @Bind(R.id.detail_item)
     TextView weatherDetails;
 
     private static final String LOG_TAG = DetailActivityFragment.class.getSimpleName();
     private static final String FORECAST_STRING = " #SUNSHINE";
+
 
     private String mForecastStr;
     private ShareActionProvider mShareActionProvider;
@@ -54,6 +58,8 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     private static final int COL_WEATHER_MAX_TEMP = 3;
     private static final int COL_WEATHER_MIN_TEMP = 4;
 
+    private String mForecastStr;
+
 
     public DetailActivityFragment() {
         setHasOptionsMenu(true);
@@ -73,6 +79,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
         if(mForecastStr != null) {
             mShareActionProvider.setShareIntent(createForecastShareIntent());
+
         }
 
         super.onCreateOptionsMenu(menu, inflater);
@@ -148,5 +155,4 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     public void onLoaderReset(android.support.v4.content.Loader<Cursor> loader) {
 
     }
-
 }
