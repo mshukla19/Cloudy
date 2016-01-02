@@ -101,7 +101,7 @@ import com.example.mshukla.cloudy.data.WeatherContract;
          View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
          // Get a reference to the ListView, and attach this adapter to it.
-         ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast);
+         ListView listView = (ListView) rootView.findViewById(R.id.listview_layout);
          listView.setAdapter(mForecastAdapter);
 
          // We'll call our MainActivity

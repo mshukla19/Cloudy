@@ -58,8 +58,6 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     private static final int COL_WEATHER_MAX_TEMP = 3;
     private static final int COL_WEATHER_MIN_TEMP = 4;
 
-    private String mForecastStr;
-
 
     public DetailActivityFragment() {
         setHasOptionsMenu(true);
