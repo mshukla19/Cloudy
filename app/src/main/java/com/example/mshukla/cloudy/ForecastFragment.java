@@ -1,8 +1,6 @@
 package com.example.mshukla.cloudy;
 
 
-import android.content.Intent;
-
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,16 +8,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.AdapterView;
-
 import android.widget.ListView;
 
 import com.example.mshukla.cloudy.data.WeatherContract;
@@ -29,7 +24,8 @@ import com.example.mshukla.cloudy.data.WeatherContract;
  */
  public class ForecastFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-     private static final int FORECAST_LOADER = 0;
+    private int mPosition;
+    private static final int FORECAST_LOADER = 0;
      // For the forecast view we're showing only a small subset of the stored data.
      // Specify the columns we need.
      private static final String[] FORECAST_COLUMNS = {
@@ -64,7 +60,12 @@ import com.example.mshukla.cloudy.data.WeatherContract;
 
      private ForecastAdapter mForecastAdapter;
 
-     public ForecastFragment() {
+    public interface Callback {
+
+        public void onItemSelected(Uri dateUri);
+    }
+
+    public ForecastFragment() {
      }
 
      @Override
@@ -96,7 +97,7 @@ import com.example.mshukla.cloudy.data.WeatherContract;
      public View onCreateView(LayoutInflater inflater, ViewGroup container,
                               Bundle savedInstanceState) {
          // The CursorAdapter will take data from our cursor and populate the ListView.
-         mForecastAdapter = new ForecastAdapter(getActivity(), null, 0);
+         mForecastAdapter = new ForecastAdapter(getContext(), null, 0);
 
          View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
@@ -113,13 +114,12 @@ import com.example.mshukla.cloudy.data.WeatherContract;
                  // if it cannot seek to that position.
                  Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
                  if (cursor != null) {
-                     String locationSetting = Utility.getPreferredLocation(getActivity());
-                     Intent intent = new Intent(getActivity(), DetailActivity.class)
-                             .setData(WeatherContract.WeatherEntry.buildWeatherLocationWithDate(
-                                     locationSetting, cursor.getLong(COL_WEATHER_DATE)
-                             ));
-                     startActivity(intent);
+                     String locationSetting = Utility.getPreferredLocation(getContext());
+                     ((Callback) getActivity())
+                             .onItemSelected(WeatherContract.WeatherEntry.buildWeatherLocationWithDate(
+                                     locationSetting, cursor.getLong(COL_WEATHER_DATE)));
                  }
+                 mPosition = position;
              }
          });
          return rootView;
@@ -138,21 +138,21 @@ import com.example.mshukla.cloudy.data.WeatherContract;
      }
 
      private void updateWeather() {
-         FetchWeatherTask weatherTask = new FetchWeatherTask(getActivity());
-         String location = Utility.getPreferredLocation(getActivity());
+         FetchWeatherTask weatherTask = new FetchWeatherTask(getContext());
+         String location = Utility.getPreferredLocation(getContext());
          weatherTask.execute(location);
      }
 
      @Override
      public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-         String locationSetting = Utility.getPreferredLocation(getActivity());
+         String locationSetting = Utility.getPreferredLocation(getContext());
 
          // Sort order:  Ascending, by date.
          String sortOrder = WeatherContract.WeatherEntry.COLUMN_DATE + " ASC";
          Uri weatherForLocationUri = WeatherContract.WeatherEntry.buildWeatherLocationWithStartDate(
                  locationSetting, System.currentTimeMillis());
 
-         return new CursorLoader(getActivity(),
+         return new CursorLoader(getContext(),
                  weatherForLocationUri,
                  FORECAST_COLUMNS,
                  null,
