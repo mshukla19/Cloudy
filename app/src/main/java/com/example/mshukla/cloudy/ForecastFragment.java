@@ -24,7 +24,10 @@ import com.example.mshukla.cloudy.data.WeatherContract;
  */
  public class ForecastFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private int mPosition;
+    private int mPosition = ListView.INVALID_POSITION;
+    private String SELECTED_KEY = "selected_position";
+
+    private ListView listView;
     private static final int FORECAST_LOADER = 0;
      // For the forecast view we're showing only a small subset of the stored data.
      // Specify the columns we need.
@@ -102,7 +105,7 @@ import com.example.mshukla.cloudy.data.WeatherContract;
          View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
          // Get a reference to the ListView, and attach this adapter to it.
-         ListView listView = (ListView) rootView.findViewById(R.id.listview_layout);
+         listView = (ListView) rootView.findViewById(R.id.listview_layout);
          listView.setAdapter(mForecastAdapter);
 
          // We'll call our MainActivity
@@ -122,6 +125,10 @@ import com.example.mshukla.cloudy.data.WeatherContract;
                  mPosition = position;
              }
          });
+
+         if (savedInstanceState!=null && savedInstanceState.containsKey(SELECTED_KEY)) {
+             mPosition = savedInstanceState.getInt(SELECTED_KEY);
+         }
          return rootView;
      }
 
@@ -163,6 +170,9 @@ import com.example.mshukla.cloudy.data.WeatherContract;
      @Override
      public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
          mForecastAdapter.swapCursor(cursor);
+         if(mPosition != ListView.INVALID_POSITION) {
+             listView.smoothScrollToPosition(mPosition);
+         }
      }
 
      @Override
