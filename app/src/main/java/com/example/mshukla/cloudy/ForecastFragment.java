@@ -28,6 +28,7 @@ import com.example.mshukla.cloudy.data.WeatherContract;
     private String SELECTED_KEY = "selected_position";
 
     private ListView listView;
+    private boolean mUseTodayLayout;
     private static final int FORECAST_LOADER = 0;
      // For the forecast view we're showing only a small subset of the stored data.
      // Specify the columns we need.
@@ -96,11 +97,19 @@ import com.example.mshukla.cloudy.data.WeatherContract;
          return super.onOptionsItemSelected(item);
      }
 
+    public void setUseTodayLayout(boolean useTodayLayout) {
+        mUseTodayLayout = useTodayLayout;
+        if(mForecastAdapter != null) {
+            mForecastAdapter.setUseTodayLayout(mUseTodayLayout);
+        }
+    }
+
      @Override
      public View onCreateView(LayoutInflater inflater, ViewGroup container,
                               Bundle savedInstanceState) {
          // The CursorAdapter will take data from our cursor and populate the ListView.
          mForecastAdapter = new ForecastAdapter(getContext(), null, 0);
+         mForecastAdapter.setUseTodayLayout(mUseTodayLayout);
 
          View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
