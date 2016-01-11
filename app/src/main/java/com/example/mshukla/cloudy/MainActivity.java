@@ -23,6 +23,11 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        getSupportActionBar().setLogo(R.drawable.ic_logo);
+
         mLocation = Utility.getPreferredLocation(this);
 
         if (findViewById(R.id.weather_detail_container) != null) {
@@ -40,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
             }
         } else {
             mTwoPane = false;
+            getSupportActionBar().setElevation(0f);
         }
 
         ForecastFragment forecastFragment = ((ForecastFragment) getSupportFragmentManager().
