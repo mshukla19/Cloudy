@@ -3,12 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingTop="?android:attr/actionBarSize"
     tools:context=".ForecastFragment"
     tools:showIn="@layout/activity_main">
 
     <ListView
         style="@style/ForecastListStyle"
+        android:clipToPadding="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:divider="@null"
